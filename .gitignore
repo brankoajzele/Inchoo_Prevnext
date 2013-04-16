@@ -1,0 +1,44 @@
+# General web stuff
+/.htaccess
+/robots.txt
+/sitemap.xml
+
+# Dynamic Magento data that doesn't need to be in the repo
+/var/*
+/media/*
+/downloader/pearlib/cache/*
+/downloader/pearlib/download/*
+/app/etc/use_cache.ser
+/app/etc/local.xml
+/errors/local.xml
+
+# Various IDE & OS files that should never be committed
+.DS_Store
+*.swp
+*.lock
+__MACOSX
+.idea
+/nbproject/*
+.project
+.buildpath
+.thumbs
+Thumbs.db
+build.properties
+.project
+.settings
+.buildpath
+/_notes/*
+
+# Explicitly mark as "do not exclude/ignore these from GIT repository"
+!/app/.htaccess
+!/downloader/.htaccess
+!/downloader/template/.htaccess
+!/errors/.htaccess
+!/includes/.htaccess
+!/lib/.htaccess
+!/media/.htaccess
+!/media/customer/.htaccess
+!/media/downloadable/.htaccess
+!/pkginfo/.htaccess
+!/var/.htaccess
+!var/package/
