@@ -1,0 +1,37 @@
+<?php 
+/**
+ * @category    Inchoo
+ * @package     Inchoo_Prevnext
+ * @author      Branko Ajzele <ajzele@gmail.com>
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+<?php $_prev = $this->getPreviousProduct(); ?>
+<?php $_next = $this->getNextProduct(); ?>
+
+<?php if($_prev || $_next): ?>
+<div class="block inchoo_prevnext">
+    
+    <?php if($_prev): ?>
+        <div class="inchoo_prevnext_prev">
+            <div class="inchoo_prevnext_link"><a rel="prev" class="product-prev left" title="<?php echo $this->escapeHtml($_prev->getName()); ?>" href="<?php echo $_prev->getProductUrl(); ?>">&laquo; <?php echo Mage::helper('inchoo_prevnext')->__('Previous') ?></a></div>
+            <div class="inchoo_prevnext_img_txt_wrapper">
+                <div class="inchoo_prevnext_txt"><?php echo $this->escapeHtml($_prev->getName()); ?></div>
+                <div class="inchoo_prevnext_img"><a rel="prev" class="product-prev left" title="<?php echo $this->escapeHtml($_prev->getName()); ?>" href="<?php echo $_prev->getProductUrl(); ?>"><img src="<?php echo $this->helper('catalog/image')->init($_prev, 'small_image')->resize(120, 150); ?>" width="120" height="150" alt="<?php echo $this->escapeHtml($_prev->getName()); ?>" /></a></div>
+            </div>
+
+        </div><?php /* #inchoo_prevnext_prev */ ?>
+    <?php endif; ?>
+
+    <?php if($_next): ?>
+        <div class="inchoo_prevnext_next">
+            <div class="inchoo_prevnext_link"><a rel="next" class="product-next right" title="<?php echo $this->escapeHtml($_next->getName()); ?>" href="<?php echo $_next->getProductUrl(); ?>"><?php echo Mage::helper('inchoo_prevnext')->__('Next') ?> &raquo;</a></div>
+            <div class="inchoo_prevnext_img_txt_wrapper">
+                <div class="inchoo_prevnext_txt"><?php echo $this->escapeHtml($_next->getName()); ?></div>
+                <div class="inchoo_prevnext_img"><a rel="next" class="product-next right" title="<?php echo $this->escapeHtml($_next->getName()); ?>" href="<?php echo $_next->getProductUrl(); ?>"><img src="<?php echo $this->helper('catalog/image')->init($_next, 'small_image')->resize(120,150); ?>" width="120" height="150" alt="<?php echo $this->escapeHtml($_next->getName()); ?>" /></a></div>
+            </div>
+        </div><?php /* #inchoo_prevnext_next */ ?>
+    <?php endif; ?>
+    
+</div>
+<?php endif; ?>
