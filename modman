@@ -1,0 +1,6 @@
+app/code/community/Inchoo/Prevnext app/code/community/Inchoo/Prevnext
+app/design/frontend/default/default/layout/inchoo_prevnext.xml app/design/frontend/default/default/layout/inchoo_prevnext.xml
+app/design/frontend/default/default/template/inchoo/prevnext app/design/frontend/default/default/template/inchoo/prevnext
+app/design/frontend/enterprise/default/layout/inchoo_prevnext.xml app/design/frontend/enterprise/default/layout/inchoo_prevnext.xml
+app/design/frontend/enterprise/default/template/inchoo/prevnext app/design/frontend/enterprise/default/template/inchoo/prevnext
+app/etc/modules/Inchoo_Prevnext.xml app/etc/modules/Inchoo_Prevnext.xml
