@@ -12,7 +12,7 @@ class Inchoo_Prevnext_Block_Links extends Mage_Core_Block_Template
         parent::_construct();
         $this->setTemplate('inchoo/prevnext/links.phtml');
     }
-    
+
     /**
      * @return Mage_Catalog_Model_Product
      */
@@ -27,5 +27,5 @@ class Inchoo_Prevnext_Block_Links extends Mage_Core_Block_Template
     public function getNextProduct()
     {
         return $this->helper('inchoo_prevnext')->getNextProduct();
-    }    
+    }
 }

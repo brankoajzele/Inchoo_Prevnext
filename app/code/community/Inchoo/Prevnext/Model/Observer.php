@@ -10,23 +10,22 @@ class Inchoo_Prevnext_Model_Observer
     public function setInchooFilteredCategoryProductCollection()
     {
         /**
-         * There might be some illogical buggy behavior when coming directly 
-         * from "Related products" / "Recently viewed" products block. 
+         * There might be some illogical buggy behavior when coming directly
+         * from "Related products" / "Recently viewed" products block.
          * Nothing that should break the page however.
          */
-	if (Mage::app()->getRequest()->getControllerName() == 'category' && Mage::app()->getRequest()->getActionName() == 'view') {
-		
-		$products = Mage::app()->getLayout()
-				->getBlockSingleton('Mage_Catalog_Block_Product_List')
-				->getLoadedProductCollection()
-				->getColumnValues('entity_id');
+        if (Mage::app()->getRequest()->getControllerName() == 'category' && Mage::app()->getRequest()->getActionName() == 'view') {
 
-		Mage::getSingleton('core/session')
-				->setInchooFilteredCategoryProductCollection($products);
+            $products = Mage::app()->getLayout()
+                ->getBlockSingleton('Mage_Catalog_Block_Product_List')
+                ->getLoadedProductCollection()
+                ->getColumnValues('entity_id');
 
-		unset($products);
-	}
-	
-	return $this;        
+            Mage::getSingleton('core/session')->setInchooFilteredCategoryProductCollection($products);
+
+            unset($products);
+        }
+
+        return $this;
     }
 }
