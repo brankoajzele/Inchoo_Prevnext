@@ -7,15 +7,15 @@
  */
 class Inchoo_Prevnext_Model_Observer
 {
-    public function setInchooFilteredCategoryProductCollection()
+    public function setInchooFilteredCategoryProductCollection(Varien_Event_Observer $observer)
     {
         /**
          * There might be some illogical buggy behavior when coming directly
          * from "Related products" / "Recently viewed" products block.
          * Nothing that should break the page however.
          */
-        if (Mage::app()->getRequest()->getControllerName() == 'category' && Mage::app()->getRequest()->getActionName() == 'view') {
-
+        $action = $observer->getEvent()->getControllerAction();
+        if ($action->getFullActionName() == 'catalog_category_view') {
             $products = Mage::app()->getLayout()
                 ->getBlockSingleton('Mage_Catalog_Block_Product_List')
                 ->getLoadedProductCollection()

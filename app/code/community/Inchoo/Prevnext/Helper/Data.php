@@ -7,53 +7,25 @@
  */
 class Inchoo_Prevnext_Helper_Data extends Mage_Core_Helper_Abstract
 {
+    protected $_moduleName = 'Inchoo_Prevnext';
+
     /**
      * @return Mage_Catalog_Model_Product or FALSE
      */
     public function getPreviousProduct()
     {
-            $currentProduct = Mage::registry('current_product');
-
-            if (!$currentProduct) {
-                return false;
-            }
-
-            $prodId = $currentProduct->getId();
-
-            $positions = Mage::getSingleton('core/session')->getInchooFilteredCategoryProductCollection();
-
-            if (!$positions) {
-
-                $currentCategory = Mage::registry('current_category');
-
-                /* Accessed product directly via URL not through category?! */
-                if (!$currentCategory) {
-                    $categoryIds = Mage::registry('current_product')->getCategoryIds();
-                    $categoryId = current($categoryIds);
-
-                    $currentCategory = Mage::getModel('catalog/category')->load($categoryId);
-
-                    Mage::register('current_category', $currentCategory);
-                }
-
-                $positions = array_reverse(array_keys(Mage::registry('current_category')->getProductsPosition()));
-                //$positions = array_keys(Mage::registry('current_category')->getProductsPosition());
-                //Zend_Debug::dump($positions, '$positions');
-            }
-
-            $cpk = @array_search($prodId, $positions);
-
-            $slice = array_reverse(array_slice($positions, 0, $cpk));
-
-            foreach ($slice as $productId) {
-                $product = Mage::getModel('catalog/product')->load($productId);
-
-                if ($product && $product->getId() && $product->isVisibleInCatalog() && $product->isVisibleInSiteVisibility()) {
-                    return $product;
-                }
-            }
-
+        $currentProduct = Mage::registry('current_product');
+        if (!$currentProduct) {
             return false;
+        }
+
+        $prodId = $currentProduct->getId();
+        $positions = $this->getProductPositions($currentProduct);
+
+        $cpk = @array_search($prodId, $positions);
+        $slice = array_reverse(array_slice($positions, 0, $cpk));
+
+        return $this->getFirstProduct($slice);
     }
 
     /**
@@ -61,45 +33,72 @@ class Inchoo_Prevnext_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getNextProduct()
     {
-            $currentProduct = Mage::registry('current_product');
-
-            if (!$currentProduct) {
-                return false;
-            }
-
-            $prodId = $currentProduct->getId();
-
-            $positions = Mage::getSingleton('core/session')->getInchooFilteredCategoryProductCollection();
-
-            if (!$positions) {
-                $currentCategory = Mage::registry('current_category');
-
-                /* Accessed product directly via URL not through category?! */
-                if (!$currentCategory) {
-                    $categoryIds = Mage::registry('current_product')->getCategoryIds();
-                    $categoryId = current($categoryIds);
-
-                    $currentCategory = Mage::getModel('catalog/category')->load($categoryId);
-
-                    Mage::register('current_category', $currentCategory);
-                }
-
-                $positions = array_reverse(array_keys(Mage::registry('current_category')->getProductsPosition()));
-                //$positions = array_keys(Mage::registry('current_category')->getProductsPosition());
-            }
-
-            $cpk = @array_search($prodId, $positions);
-
-            $slice = array_slice($positions, $cpk + 1, count($positions));
-
-            foreach ($slice as $productId) {
-                $product = Mage::getModel('catalog/product')->load($productId);
-
-                if ($product && $product->getId() && $product->isVisibleInCatalog() && $product->isVisibleInSiteVisibility()) {
-                    return $product;
-                }
-            }
-
+        $currentProduct = Mage::registry('current_product');
+        if (!$currentProduct) {
             return false;
+        }
+
+        $prodId = $currentProduct->getId();
+        $positions = $this->getProductPositions($currentProduct);
+
+        $cpk = @array_search($prodId, $positions);
+        $slice = array_slice($positions, $cpk + 1, count($positions));
+
+        return $this->getFirstProduct($slice);
+    }
+
+    /**
+     * Get Product Position in Category
+     *
+     * @param Mage_Catalog_Model_Product
+     * @return array
+     */
+    public function getProductPositions($product)
+    {
+        $positions = Mage::getSingleton('core/session')->getInchooFilteredCategoryProductCollection();
+
+        if (!$positions) {
+            $currentCategory = Mage::registry('current_category');
+
+            /* Accessed product directly via URL not through category?! */
+            if (!$currentCategory) {
+                $categoryIds = $product->getCategoryIds();
+
+                if (!count($categoryIds)) {
+                    return false;
+                }
+
+                $categoryId = current($categoryIds);
+                $currentCategory = Mage::getModel('catalog/category')->load($categoryId);
+                Mage::register('current_category', $currentCategory);
+            }
+
+            if (Mage::getResourceModel('catalog/category_collection')->getDisableFlat()) {
+                $positions = Mage::registry('current_category')->getProductsPosition();
+            } else {
+                $positions = Mage::getResourceModel('catalog/category')->getProductsPosition($currentCategory);
+            }
+
+            $positions = array_reverse(array_keys($positions));
+        }
+        
+        return $positions;
+    }
+
+    /**
+     * Get first product from ID-array
+     *
+     * @param array $ids Product IDs
+     * @param Mage_Catalog_Model_Product|false
+     */
+    public function getFirstProduct(array $productIds)
+    {
+        foreach ($productIds as $productId) {
+            $product = Mage::getModel('catalog/product')->load($productId);
+            if ($product && $product->isVisibleInCatalog() && $product->isVisibleInSiteVisibility()) {
+                return $product;
+            }
+        }
+        return false;
     }
 }
