@@ -1,0 +1,16 @@
+{
+    "name": "inchoo/prevnext",
+    "type": "magento-module",
+    "description": "Magento extension. With a single click of the “Next” or “Previous” link, customers can navigate between products.",
+    "homepage": "https://github.com/ajzele/Inchoo_Prevnext",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*"
+    },
+    "authors": [
+        {
+            "name": "Branko Ajzele",
+            "email": "ajzele@gmail.com",
+            "role": "Author/Maintainer"
+        }
+    ]
+}
